@@ -1,17 +1,22 @@
 #include <ESP8266WiFi.h>
 #include <espnow.h>
 
+typedef struct struct_message {
+  int id;
+  float value;
+} struct_message;
+
+struct_message myData;
+
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len) {
+  memcpy(&myData, incomingData, sizeof(myData));
+  
   Serial.print("Bytes received: ");
   Serial.println(len);
-  
-  // Create a null-terminated string to print
-  char message[len + 1];
-  memcpy(message, incomingData, len);
-  message[len] = '\0';
-  
-  Serial.print("Message: ");
-  Serial.println(message);
+  Serial.print("ID: ");
+  Serial.println(myData.id);
+  Serial.print("Value: ");
+  Serial.println(myData.value);
 }
 
 void setup() {

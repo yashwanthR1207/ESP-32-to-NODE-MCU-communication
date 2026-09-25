@@ -3,6 +3,13 @@
 
 uint8_t receiverMAC[] = {0x2C, 0xF4, 0x32, 0x30, 0xCD, 0xD2};
 
+typedef struct struct_message {
+  int id;
+  float value;
+} struct_message;
+
+struct_message myData;
+
 void setup()
 {
   Serial.begin(115200);
@@ -31,12 +38,13 @@ void setup()
 
 void loop()
 {
-  const char message[] = "HELLO FROM ESP32";
+  myData.id = 1;
+  myData.value = 25.5;
 
   esp_err_t result = esp_now_send(
     receiverMAC,
-    (uint8_t *)message,
-    sizeof(message)
+    (uint8_t *)&myData,
+    sizeof(myData)
   );
 
   if (result == ESP_OK)
